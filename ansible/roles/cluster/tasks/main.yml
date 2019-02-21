@@ -1,6 +1,6 @@
 - name: create a k8s cluster
   gcp_container_cluster:
-    name: "db-loadbalance-cluster"
+    name: "{{ CLUSTER_NAME }}"
     initial_node_count: 2
     master_auth:
       username: "{{ CLUSTER_USERNAME }}"
