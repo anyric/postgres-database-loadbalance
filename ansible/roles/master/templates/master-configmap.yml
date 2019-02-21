@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-master-config
+  labels:
+    app: postgres-master
+data:
+  POSTGRES_DB: "{{ MASTER_DB }}"
+  POSTGRES_USER: "{{ MASTER_USERNAME }}"
+  POSTGRES_PASSWORD: "{{ MASTER_PASSWORD }}"

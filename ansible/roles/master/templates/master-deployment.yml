@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: postgres-master
+  labels:
+    name: postgres-master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: postgress-master
+    spec:
+      containers:
+        - name: postgres-master
+          image: postgres:10.4
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-master-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-master-pv-claim

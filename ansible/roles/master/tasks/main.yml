@@ -1,0 +1,19 @@
+- name: create master configMap
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/master-configmap.yml') | from_yaml}}"
+
+- name: create master pvc
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/master-pvc-storage.yml') | from_yaml}}"
+
+- name: create master deployment
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/master-deployment.yml') | from_yaml}}"
+
+- name: create master service
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/master-service.yml') | from_yaml}}"
