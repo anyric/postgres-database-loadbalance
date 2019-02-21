@@ -3,13 +3,13 @@
     name: "db-loadbalance-cluster"
     initial_node_count: 2
     master_auth:
-      username: "anyric"
-      password: "password@123"
+      username: "{{ CLUSTER_USERNAME }}"
+      password: "{{ CLUSTER_PASSWORD }}"
     node_config:
       machine_type: n1-standard-1
       disk_size_gb: 500
     zone: europe-west1-b
-    project: "andela-learning"
+    project: "{{ PROJECT_NAME }}"
     auth_kind: "service_account"
     service_account_file: "./account.json"
     state: present
