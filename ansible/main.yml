@@ -1,6 +1,6 @@
 - hosts: localhost
   vars_files:
-    - ./{{ lookup('env', 'namespace') }}-vars.yml
+    - ./vars.yml
   roles:
     - cluster
     - master

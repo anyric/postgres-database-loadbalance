@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: postgres-slave-config
   labels:
-    app: postgres
+    app: postgres-slave
 data:
   POSTGRES_DB: "{{ DATABASE_NAME }}"
   POSTGRES_USER: "{{ DATABASE_USERNAME }}"
