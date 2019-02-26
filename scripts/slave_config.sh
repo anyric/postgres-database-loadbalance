@@ -14,6 +14,6 @@ trigger_file = '/tmp/failover.trigger'
 EOF'
 }
 
-chmod -R g-rwx,o-rwx /var/lib/postgresql/9.4/main/ ; chown -R postgres.postgres /var/lib/postgresql/9.4/main/
+chmod -R g-rwx,o-rwx /var/lib/postgresql/9.4/main/ ; chown -R postgres.postgres /var/lib/postgresql/10.4/main/
  
 sudo systemctl restart postgresql
