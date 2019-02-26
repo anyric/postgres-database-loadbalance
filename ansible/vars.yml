@@ -1,0 +1,5 @@
+---
+ansible_python_interpreter: "/anaconda3/bin/python3"
+PROJECT_NAME: "{{ lookup('env', 'PROD_PROJECT_NAME') }}"
+namespace: "{{ lookup('env', 'namespace') }}"
+IMG_TAG: "{{ lookup('env', 'IMG_TAG') }}"
