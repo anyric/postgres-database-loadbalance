@@ -21,9 +21,15 @@ spec:
             - configMapRef:
                 name: postgres-master-config
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgredb
+            - name: postgredb
+              mountPath: /var/lib/postgresql/data
+            - name: config_files
+              mountPath: /scripts
       volumes:
         - name: postgredb
           persistentVolumeClaim:
             claimName: postgres-master-pv-claim
+        - name: config_files
+          configMap:
+            name: config_files
+            defaultMode: 0744
