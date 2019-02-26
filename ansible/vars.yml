@@ -1,5 +1,9 @@
 ---
 ansible_python_interpreter: "/anaconda3/bin/python3"
-PROJECT_NAME: "{{ lookup('env', 'PROD_PROJECT_NAME') }}"
-namespace: "{{ lookup('env', 'namespace') }}"
-IMG_TAG: "{{ lookup('env', 'IMG_TAG') }}"
+PROJECT_NAME: "{{ lookup('env', 'PROJECT_NAME') }}"
+CLUSTER_NAME: "{{ lookup('env', 'CLUSTER_NAME' }}"
+CLUSTER_USERNAME: "{{ LOOKUP('env', 'CLUSTER_USERNAME' }}"
+CLUSTER_PASSWORD: "{{ LOOKUP('env', 'CLUSTER_PASSWORD' }}"
+DATABASE_NAME: "{{ LOOKUP('env', 'DATABASE_NAME' }}"
+DATABASE_USERNAME: "{{ LOOKUP('env', 'DATABASE_USERNAME' }}"
+DATABASE_PASSWORD: "{{ LOOKUP('env', 'DATABASE_PASSWORD' }}"
