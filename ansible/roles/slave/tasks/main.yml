@@ -3,10 +3,15 @@
     state: present
     definition: "{{ lookup('template', 'templates/slave-configmap.yml') | from_yaml}}"
 
+- name: create slave pv
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'templates/slave-pv-storage.yml') | from_yaml}}"
+
 - name: create slave pvc
   k8s:
     state: present
-    definition: "{{ lookup('template', 'templates/slave-pvc-storage.yml') | from_yaml}}"
+    definition: "{{ lookup('template', 'templates/slave-pvc.yml') | from_yaml}}"
 
 - name: create slave deployment
   k8s:

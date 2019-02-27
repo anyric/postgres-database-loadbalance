@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: postgres-master
+  namespace: default
   labels:
     name: postgres-master
 spec:
@@ -23,13 +24,13 @@ spec:
           volumeMounts:
             - name: postgredb
               mountPath: /var/lib/postgresql/data
-            - name: config_files
+            - name: config-files
               mountPath: /scripts
       volumes:
         - name: postgredb
           persistentVolumeClaim:
             claimName: postgres-master-pv-claim
-        - name: config_files
+        - name: config-files
           configMap:
-            name: config_files
+            name: config-files
             defaultMode: 0744

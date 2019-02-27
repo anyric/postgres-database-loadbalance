@@ -1,15 +1,31 @@
 - name: create a k8s cluster
   gcp_container_cluster:
-    name: "{{ CLUSTER_NAME }}"
+    name: "{{ lookup('env', 'CLUSTER_NAME') }}"
     initial_node_count: 2
     master_auth:
-      username: "{{ CLUSTER_USERNAME }}"
-      password: "{{ CLUSTER_PASSWORD }}"
+      username: "{{ lookup('env', 'CLUSTER_USERNAME') }}"
+      password: "{{ lookup('env', 'CLUSTER_PASSWORD') }}"
     node_config:
       machine_type: n1-standard-1
       disk_size_gb: 500
     zone: europe-west1-b
-    project: "{{ PROJECT_NAME }}"
-    auth_kind: "service_account"
-    service_account_file: "./account.json"
+    project: "{{ lookup('env', 'PROJECT_NAME') }}"
+    auth_kind: "serviceaccount"
+    service_account_file: "../account.json"
+    scopes:
+      - https://www.googleapis.com/auth/cloud-platform
     state: present
+  register: cluster
+
+- name: create a node pool
+  gcp_container_node_pool:
+      name: "{{ lookup('env', 'CLUSTER_NAME') }}"
+      initial_node_count: 2
+      cluster: "{{ lookup('env', 'CLUSTER_NAME') }}"
+      zone: europe-west1-b
+      project: "{{ lookup('env', 'PROJECT_NAME') }}"
+      auth_kind: "{{ auth_kind }}"
+      service_account_file: "../account.json"
+      scopes:
+        - https://www.googleapis.com/auth/cloud-platform
+      state: present

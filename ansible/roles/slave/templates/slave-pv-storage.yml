@@ -2,6 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: postgres-slave-pv-volume
+  namespace: default
   labels:
     type: local
     app: postgres-slave
@@ -13,17 +14,3 @@ spec:
     - ReadWriteMany
   hostPath:
     path: "/mnt/data"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgres-slave-pv-claim
-  labels:
-    app: postgres-slave
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
