@@ -1,3 +1,6 @@
 .env
 main.retry
 account.json
+*.tfstate.*
+terraform.tfstate
+.terraform
