@@ -3,14 +3,12 @@ kind: Deployment
 metadata:
   name: postgres-master
   namespace: default
-  labels:
-    name: postgres-master
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: postgress-master
+        app: postgres-master
     spec:
       containers:
         - name: postgres-master
@@ -21,16 +19,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: postgres-master-config
-          volumeMounts:
-            - name: postgredb
-              mountPath: /var/lib/postgresql/data
-            - name: config-files
-              mountPath: /scripts
-      volumes:
-        - name: postgredb
-          persistentVolumeClaim:
-            claimName: postgres-master-pv-claim
-        - name: config-files
-          configMap:
-            name: config-files
-            defaultMode: 0744

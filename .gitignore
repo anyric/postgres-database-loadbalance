@@ -4,3 +4,4 @@ account.json
 *.tfstate.*
 terraform.tfstate
 .terraform
+.DS_Store

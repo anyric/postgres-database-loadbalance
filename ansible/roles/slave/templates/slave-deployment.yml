@@ -3,14 +3,12 @@ kind: Deployment
 metadata:
   name: postgres-slave
   namespace: default
-  labels:
-    name: postgres-slave
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
-        name: postgress-slave
+        app: postgres-slave
     spec:
       containers:
         - name: postgres-slave
@@ -18,20 +16,6 @@ spec:
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
-          command: ["/scripts/slave_config.sh"]
           envFrom:
             - configMapRef:
                 name: postgres-slave-config
-          volumeMounts:
-            - name: postgredb
-              mountPath: /var/lib/postgresql/data
-            - name: config-files
-              mountPath: /scripts
-      volumes:
-        - name: postgredb
-          persistentVolumeClaim:
-            claimName: postgres-slave-pv-claim
-        - name: config-files
-          configMap:
-            name: config-files
-            defaultMode: 0744

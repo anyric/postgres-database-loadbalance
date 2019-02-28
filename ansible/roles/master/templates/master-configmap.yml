@@ -9,3 +9,15 @@ data:
   POSTGRES_DB: "{{ DATABASE_NAME }}"
   POSTGRES_USER: "{{ DATABASE_USERNAME }}"
   POSTGRES_PASSWORD: "{{ DATABASE_PASSWORD }}"
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: postgres-config
+#   namespace: default
+#   labels:
+#     app: postgres-master
+# data:
+#   POSTGRES_DB: postgresdb
+#   POSTGRES_USER: postgresadmin
+#   POSTGRES_PASSWORD: admin123
