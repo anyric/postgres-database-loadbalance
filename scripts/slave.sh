@@ -1,33 +1,41 @@
 #!/bin/bash
 set -ex
-set -o pipefail
 
-sudo bash -c 'cat <<EOF> /etc/apt/sources.list.d/pgdg.list
-deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main
-EOF'
+echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main "  >> /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - 
+apt-get update
+apt-get install -y postgresql-9.6
+/etc/init.d/postgresql start
 
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo apt-get update
+sed -i -e "s/^#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/9.6/main/postgresql.conf
+sed -i -e 's/127.0.0.1/0.0.0.0/g' /etc/postgresql/9.6/main/pg_hba.conf
+sed -i -e 's/32/0/g' /etc/postgresql/9.6/main/pg_hba.conf
+export PATH=$PATH:/usr/lib/postgresql/9.6/bin
 
-sudo apt-get install postgresql-9.6
+/etc/init.d/postgresql stop
 
-sudo systemctl status postgresql
+sed -i -e 's/^#wal_level = minimal/wal_level = hot_standby/g' /etc/postgresql/9.6/main/postgresql.conf
+sed -i -e 's/^#max_wal_senders = 0/max_wal_senders = 5/g' /etc/postgresql/9.6/main/postgresql.conf
+sed -i -e 's/^#wal_keep_segments = 0/wal_keep_segments = 32/g' /etc/postgresql/9.6/main/postgresql.conf
+sed -i -e 's/^#archive_mode = off/archive_mode = on/g' /etc/postgresql/9.6/main/postgresql.conf
+echo "archive_command = 'cp %p /var/lib/postgresql/9.6/archive/%f'" >> /etc/postgresql/9.6/main/postgresql.conf
+mkdir /var/lib/postgresql/9.6/archive
+chown postgres.postgres /var/lib/postgresql/9.6/archive
 
-sudo systemctl stop postgresql
+echo "host    repl    replication   postgres-slave     md5" >> /etc/postgresql/9.6/main/pg_hba.conf
 
-sudo rm -rf /var/lib/postgresql/9.6/main/*
+rm -rf /var/lib/postgresql/9.6/main/*
+PGPASSWORD="password"
+su -c "pg_basebackup -h postgres-master -D /var/lib/postgresql/9.6/main -U repl --xlog-method=stream"
 
-sudo su postgresql
-pg_basebackup -h postgres-master -D /var/lib/postgresql/9.6/main --password=password -U repl --xlog-method=stream
-exit
 sed -i -e 's/^#hot_standby/hot_standby = on/g' /etc/postgresql/9.6/main/postgresql.conf
 
-sudo bash -c "cat <<EOF> /var/lib/postgresql/9.6/main/recovery.conf
+bash -c "cat <<EOF> /var/lib/postgresql/9.6/main/recovery.conf
 standby_mode      = 'on'
 primary_conninfo  = 'host=postgres-master' port=5432 user=repl password=password'
 trigger_file      = '/var/lib/postgresql/9.6/trigger'
 restore_command   = 'cp /var/lib/postgresql/9.6/archive/%f \"%p\"'
 EOF"
 
-sudo systemctl start postgresql
-sudo systemctl restart postgresql
+systemctl start postgresql
+systemctl restart postgresql

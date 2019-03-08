@@ -5,9 +5,9 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y vim wget
 
-COPY ./scripts/master.sh  /app
+COPY ./scripts/slave.sh  /app
 
-RUN /bin/bash -c "source /app/master.sh"
+RUN /bin/bash -c "source /app/slave.sh"
 
 RUN /etc/init.d/postgresql start
 
