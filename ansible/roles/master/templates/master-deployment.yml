@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: postgres-master
-          image: postgres:10.4
+          image: anyric/postgres-master
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432

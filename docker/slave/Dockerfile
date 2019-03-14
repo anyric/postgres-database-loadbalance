@@ -3,9 +3,13 @@ LABEL Maintainer="Anyama Richard"
 
 WORKDIR /app
 
+RUN apt-get update && apt-get -y install apt-transport-https curl
+
 RUN apt-get update && apt-get install -y vim wget
 
-COPY ./scripts/slave.sh  /app
+COPY ./scripts/slave.sh /app
+
+COPY ./scripts/slave_startup.sh /app
 
 RUN /bin/bash -c "source /app/slave.sh"
 

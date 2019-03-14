@@ -12,8 +12,9 @@ spec:
     spec:
       containers:
         - name: postgres-slave
-          image: postgres:10.4
+          image: anyric/postgres-slave
           imagePullPolicy: "IfNotPresent"
+          command: ["/bin/bash", "-c", "source /app/slave_startup.sh"]
           ports:
             - containerPort: 5432
           envFrom:

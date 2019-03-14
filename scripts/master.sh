@@ -19,13 +19,14 @@ su -c "psql -c \"CREATE ROLE repl WITH REPLICATION PASSWORD 'password' LOGIN;\""
 sed -i -e 's/^#wal_level = minimal/wal_level = hot_standby/g' /etc/postgresql/9.6/main/postgresql.conf
 sed -i -e 's/^#max_wal_senders = 0/max_wal_senders = 5/g' /etc/postgresql/9.6/main/postgresql.conf
 sed -i -e 's/^#wal_keep_segments = 0/wal_keep_segments = 32/g' /etc/postgresql/9.6/main/postgresql.conf
+sed -i -e 's/^#hot_standby = off/hot_standby = on/g' /etc/postgresql/9.6/main/postgresql.conf
 sed -i -e 's/^#archive_mode = off/archive_mode = on/g' /etc/postgresql/9.6/main/postgresql.conf
 # sed -i -e "s/^#archive_command=''/archive_command = 'cp \%p /var/lib/postgresql/9.6/archive/\%f'/g" /etc/postgresql/9.6/main/postgresql.conf
 echo "archive_command = 'cp %p /var/lib/postgresql/9.6/archive/%f'" >> /etc/postgresql/9.6/main/postgresql.conf
 mkdir /var/lib/postgresql/9.6/archive
 chown postgres.postgres /var/lib/postgresql/9.6/archive
 
-echo "host    repl    replication   postgres-slave     md5" >> /etc/postgresql/9.6/main/pg_hba.conf
+echo "host        replication         repl          postgres-slave          md5" >> /etc/postgresql/9.6/main/pg_hba.conf
 
 /etc/init.d/postgresql start
 /etc/init.d/postgresql restart

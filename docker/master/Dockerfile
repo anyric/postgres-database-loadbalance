@@ -3,6 +3,10 @@ LABEL Maintainer="Anyama Richard"
 
 WORKDIR /app
 
+RUN apt-get update && apt-get -y install apt-transport-https curl 
+
+# RUN apt-get install -y --no-install-recommends ca-certificates curl software-properties-common apt-transport-https
+
 RUN apt-get update && apt-get install -y vim wget
 
 COPY ./scripts/master.sh  /app
